@@ -6,6 +6,8 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.sounds.SoundEvents;
 import java.util.List;
 
 public final class MusicScreen extends Screen {
@@ -32,7 +34,7 @@ public final class MusicScreen extends Screen {
         addRenderableWidget(Button.builder(Component.literal("-"), b -> scaleIsland(-.1f)).bounds(x + 146, y + 196, 32, 20).build());
         addRenderableWidget(Button.builder(Component.literal("+"), b -> scaleIsland(.1f)).bounds(x + 260, y + 196, 32, 20).build());
     }
-    private void volume(float n) { MusicController.adjustVolume(n); }
+    private void volume(float n) { MusicController.adjustVolume(Minecraft.getInstance(), n); }
     private void scaleIsland(float amount) { PlayerConfig.islandScale = PlayerConfig.clampScale(PlayerConfig.islandScale + amount); PlayerConfig.save(); }
     private List<Track> visible() { String q = search == null ? "" : search.getValue().toLowerCase(); return tracks.stream().filter(t -> !backgroundOnly || t.isBackgroundMusic()).filter(t -> t.title().toLowerCase().contains(q) || t.id().toString().contains(q)).toList(); }
     @Override public void extractRenderState(GuiGraphicsExtractor g, int mx, int my, float delta) {
@@ -58,8 +60,16 @@ public final class MusicScreen extends Screen {
     }
     @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event, boolean doubleClick) {
         int x = width / 2 - 150, y = height / 2 - 105;
-        if (event.x() >= x && event.x() <= x + 300 && event.y() >= y + 76 && event.y() < y + 129) { selected = scroll + Math.max(0, (int)(event.y() - (y + 78)) / 13); return true; }
+        if (event.x() >= x && event.x() <= x + 300 && event.y() >= y + 76 && event.y() < y + 129) {
+            selected = scroll + Math.max(0, (int)(event.y() - (y + 78)) / 13);
+            playUiClick();
+            return true;
+        }
+        if (children().stream().anyMatch(child -> child instanceof Button button && button.isMouseOver(event.x(), event.y()))) playUiClick();
         return super.mouseClicked(event, doubleClick);
+    }
+    private void playUiClick() {
+        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }
     @Override public boolean mouseScrolled(double mx, double my, double horizontal, double vertical) { scroll = Math.max(0, Math.min(Math.max(0, visible().size() - 4), scroll - (int)Math.signum(vertical))); return true; }
 }

@@ -27,8 +27,8 @@ public final class MusicPlayerClient implements ClientModInitializer {
                 while (stop.consumeClick()) MusicController.stop(client);
                 while (next.consumeClick()) MusicController.next(client, 1);
                 while (previous.consumeClick()) MusicController.next(client, -1);
-                while (volumeUp.consumeClick()) MusicController.adjustVolume(.05f);
-                while (volumeDown.consumeClick()) MusicController.adjustVolume(-.05f);
+                while (volumeUp.consumeClick()) MusicController.adjustVolume(client, .05f);
+                while (volumeDown.consumeClick()) MusicController.adjustVolume(client, -.05f);
             }
             MusicController.tick(client);
         });
