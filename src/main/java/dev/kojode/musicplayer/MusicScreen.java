@@ -40,13 +40,14 @@ public final class MusicScreen extends Screen {
         super.extractRenderState(g, mx, my, delta);
         g.text(font, title, x, y, 0xFFFFD978, true);
         List<Track> list = visible(); g.text(font, "Titel: " + list.size() + " | Lautstärke: " + Math.round(PlayerConfig.volume * 100) + "%", x, y + 64, 0xFFE3D7C2, true);
-        for (int i = 0; i < 5 && scroll + i < list.size(); i++) { Track t = list.get(scroll + i); int yy = y + 78 + i * 13; g.fill(x - 2, yy - 2, x + 302, yy + 11, scroll + i == selected ? 0xFF9C742C : 0xFF51483A); g.text(font, t.title(), x + 3, yy, 0xFFF4E8D2, true); }
-        Track now = MusicController.current(); g.text(font, "Läuft: " + (now == null ? "—" : now.title()), x, y + 130, 0xFFFFD978, true);
+        for (int i = 0; i < 4 && scroll + i < list.size(); i++) { Track t = list.get(scroll + i); int yy = y + 78 + i * 13; g.fill(x - 2, yy - 2, x + 302, yy + 11, scroll + i == selected ? 0xFF9C742C : 0xFF51483A); g.text(font, t.title(), x + 3, yy, 0xFFF4E8D2, true); }
+        g.fill(x - 2, y + 127, x + 302, y + 141, 0xFF211E19);
+        Track now = MusicController.current(); g.text(font, "Jetzt läuft: " + (now == null ? "—" : now.title()), x + 3, y + 130, 0xFFFFE08A, true);
     }
     @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event, boolean doubleClick) {
         int x = width / 2 - 150, y = height / 2 - 110;
-        if (event.x() >= x && event.x() <= x + 300 && event.y() >= y + 76 && event.y() < y + 142) { selected = scroll + Math.max(0, (int)(event.y() - (y + 78)) / 13); return true; }
+        if (event.x() >= x && event.x() <= x + 300 && event.y() >= y + 76 && event.y() < y + 129) { selected = scroll + Math.max(0, (int)(event.y() - (y + 78)) / 13); return true; }
         return super.mouseClicked(event, doubleClick);
     }
-    @Override public boolean mouseScrolled(double mx, double my, double horizontal, double vertical) { scroll = Math.max(0, Math.min(Math.max(0, visible().size() - 5), scroll - (int)Math.signum(vertical))); return true; }
+    @Override public boolean mouseScrolled(double mx, double my, double horizontal, double vertical) { scroll = Math.max(0, Math.min(Math.max(0, visible().size() - 4), scroll - (int)Math.signum(vertical))); return true; }
 }
