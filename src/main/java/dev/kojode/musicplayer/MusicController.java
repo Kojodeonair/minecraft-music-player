@@ -27,7 +27,8 @@ public final class MusicController {
     }
     private static final class PlayerSound extends AbstractSoundInstance {
         PlayerSound(Track t, float volume, boolean looping) {
-            super(t.event(), SoundSource.MUSIC, RandomSource.create());
+            // Each alias in assets/musicplayer/sounds.json points at exactly one vanilla OGG.
+            super(t.id(), SoundSource.MUSIC, RandomSource.create());
             this.volume = volume; this.looping = looping; this.relative = true; this.attenuation = Attenuation.NONE;
         }
     }
