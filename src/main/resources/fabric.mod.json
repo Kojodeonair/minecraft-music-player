@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "id": "musicplayer",
+  "version": "${version}",
+  "name": "Minecraft Music Player",
+  "description": "Client-side browser for Minecraft music sound events.",
+  "environment": "client",
+  "entrypoints": { "client": ["dev.codex.musicplayer.MusicPlayerClient"] },
+  "depends": { "fabricloader": ">=0.19.5", "minecraft": "~26.3", "java": ">=25", "fabric-api": "*" }
+}
