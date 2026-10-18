@@ -1,0 +1,17 @@
+# Gradle and Loom caches
+.gradle/
+build/
+
+# Local Minecraft run instance, worlds, user cache, logs, and options
+run/
+
+# IDE settings and machine-specific launch configurations
+.idea/
+*.iml
+
+# Generated mod artifacts in the project root
+/music-player-*.jar
+
+# JVM crash reports
+hs_err_pid*.log
+replay_pid*.log
