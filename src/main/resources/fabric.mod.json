@@ -5,6 +5,7 @@
   "name": "Minecraft Music Player",
   "description": "Client-side browser for Minecraft music sound events.",
   "environment": "client",
+  "mixins": ["musicplayer.mixins.json"],
   "entrypoints": { "client": ["dev.kojode.musicplayer.MusicPlayerClient"] },
   "depends": { "fabricloader": ">=0.19.5", "minecraft": "~26.3", "java": ">=25", "fabric-api": "*" }
 }

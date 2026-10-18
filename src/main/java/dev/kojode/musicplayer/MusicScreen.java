@@ -12,10 +12,13 @@ public final class MusicScreen extends Screen {
     private final List<Track> tracks = Track.discover();
     private EditBox search;
     private int selected, scroll;
+    private boolean backgroundOnly;
     public MusicScreen() { super(Component.literal("Music Player")); }
     @Override protected void init() {
         int x = width / 2 - 150, y = height / 2 - 110;
         search = new EditBox(font, x, y + 18, 300, 20, Component.literal("Search")); search.setHint(Component.literal("Search music...")); addRenderableWidget(search);
+        addRenderableWidget(Button.builder(Component.literal(backgroundOnly ? "Hintergrundmusik ✓" : "Hintergrundmusik"), b -> { backgroundOnly = !backgroundOnly; selected = 0; scroll = 0; rebuildWidgets(); }).bounds(x, y + 42, 146, 20).build());
+        addRenderableWidget(Button.builder(Component.literal("Alle Titel"), b -> { backgroundOnly = false; selected = 0; scroll = 0; rebuildWidgets(); }).bounds(x + 150, y + 42, 150, 20).build());
         addRenderableWidget(Button.builder(Component.literal("Play"), b -> { Track t = visible().stream().skip(selected).findFirst().orElse(null); if (t != null) MusicController.play(Minecraft.getInstance(), t); }).bounds(x, y + 144, 52, 20).build());
         addRenderableWidget(Button.builder(Component.literal("Stop"), b -> MusicController.stop(Minecraft.getInstance())).bounds(x + 56, y + 144, 52, 20).build());
         addRenderableWidget(Button.builder(Component.literal("Pause/Resume"), b -> MusicController.pauseResume(Minecraft.getInstance())).bounds(x + 112, y + 144, 100, 20).build());
@@ -27,17 +30,22 @@ public final class MusicScreen extends Screen {
         addRenderableWidget(Button.builder(Component.literal("Vol +"), b -> volume(.1f)).bounds(x + 262, y + 170, 38, 20).build());
     }
     private void volume(float n) { PlayerConfig.volume = Math.max(0, Math.min(1, PlayerConfig.volume + n)); PlayerConfig.save(); }
-    private List<Track> visible() { String q = search == null ? "" : search.getValue().toLowerCase(); return tracks.stream().filter(t -> t.title().toLowerCase().contains(q) || t.id().toString().contains(q)).toList(); }
+    private List<Track> visible() { String q = search == null ? "" : search.getValue().toLowerCase(); return tracks.stream().filter(t -> !backgroundOnly || t.isBackgroundMusic()).filter(t -> t.title().toLowerCase().contains(q) || t.id().toString().contains(q)).toList(); }
     @Override public void extractRenderState(GuiGraphicsExtractor g, int mx, int my, float delta) {
-        super.extractRenderState(g, mx, my, delta); int x = width / 2 - 150, y = height / 2 - 110;
-        g.fill(x - 8, y - 8, x + 308, y + 202, 0xE0202020); g.text(font, title, x, y, 0xFFFFFFFF, true);
-        List<Track> list = visible(); g.text(font, "Tracks: " + list.size() + " | Volume: " + Math.round(PlayerConfig.volume * 100) + "%", x, y + 42, 0xFFCCCCCC, true);
-        for (int i = 0; i < 5 && scroll + i < list.size(); i++) { Track t = list.get(scroll + i); int yy = y + 59 + i * 16; g.fill(x - 2, yy - 2, x + 302, yy + 13, scroll + i == selected ? 0xFF555533 : 0x80404040); g.text(font, t.title(), x + 3, yy, 0xFFFFFFFF, true); }
-        Track now = MusicController.current(); g.text(font, "Playing: " + (now == null ? "—" : now.title()), x, y + 130, 0xFFFFD966, true);
+        int x = width / 2 - 150, y = height / 2 - 110;
+        // Draw the frame first so vanilla buttons and text fields remain visible above it.
+        g.fill(x - 8, y - 8, x + 308, y + 202, 0xFF171512);
+        g.fill(x - 5, y - 5, x + 305, y + 199, 0xFF80613A);
+        g.fill(x - 3, y - 3, x + 303, y + 197, 0xFF332D25);
+        super.extractRenderState(g, mx, my, delta);
+        g.text(font, title, x, y, 0xFFFFD978, true);
+        List<Track> list = visible(); g.text(font, "Titel: " + list.size() + " | Lautstärke: " + Math.round(PlayerConfig.volume * 100) + "%", x, y + 64, 0xFFE3D7C2, true);
+        for (int i = 0; i < 5 && scroll + i < list.size(); i++) { Track t = list.get(scroll + i); int yy = y + 78 + i * 13; g.fill(x - 2, yy - 2, x + 302, yy + 11, scroll + i == selected ? 0xFF9C742C : 0xFF51483A); g.text(font, t.title(), x + 3, yy, 0xFFF4E8D2, true); }
+        Track now = MusicController.current(); g.text(font, "Läuft: " + (now == null ? "—" : now.title()), x, y + 130, 0xFFFFD978, true);
     }
     @Override public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event, boolean doubleClick) {
         int x = width / 2 - 150, y = height / 2 - 110;
-        if (event.x() >= x && event.x() <= x + 300 && event.y() >= y + 57 && event.y() < y + 137) { selected = scroll + Math.max(0, (int)(event.y() - (y + 59)) / 16); return true; }
+        if (event.x() >= x && event.x() <= x + 300 && event.y() >= y + 76 && event.y() < y + 142) { selected = scroll + Math.max(0, (int)(event.y() - (y + 78)) / 13); return true; }
         return super.mouseClicked(event, doubleClick);
     }
     @Override public boolean mouseScrolled(double mx, double my, double horizontal, double vertical) { scroll = Math.max(0, Math.min(Math.max(0, visible().size() - 5), scroll - (int)Math.signum(vertical))); return true; }

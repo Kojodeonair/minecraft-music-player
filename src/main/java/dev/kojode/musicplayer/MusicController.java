@@ -12,7 +12,8 @@ public final class MusicController {
     private static boolean paused;
     private MusicController() {}
     public static Track current() { return current; }
-    public static void play(Minecraft mc, Track track) { stop(mc); current = track; paused = false; sound = new PlayerSound(track, PlayerConfig.volume, PlayerConfig.loop); mc.getSoundManager().play(sound); }
+    public static boolean isPlayingManually() { return sound != null; }
+    public static void play(Minecraft mc, Track track) { stop(mc); mc.getMusicManager().stopPlaying(); current = track; paused = false; sound = new PlayerSound(track, PlayerConfig.volume, PlayerConfig.loop); mc.getSoundManager().play(sound); }
     public static void stop(Minecraft mc) { if (sound != null) mc.getSoundManager().stop(sound); sound = null; current = null; paused = false; }
     public static void pauseResume(Minecraft mc) { if (current == null) return; if (!paused) { if (sound != null) mc.getSoundManager().stop(sound); sound = null; paused = true; } else play(mc, current); }
     public static void next(Minecraft mc, int step) { List<Track> all = Track.discover(); if (all.isEmpty()) return; int i = current == null ? -1 : all.indexOf(current); play(mc, all.get(Math.floorMod(i + step, all.size()))); }
