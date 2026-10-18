@@ -1,8 +1,7 @@
-package dev.codex.musicplayer;
+package dev.kojode.musicplayer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import java.util.List;

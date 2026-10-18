@@ -1,4 +1,4 @@
-package dev.codex.musicplayer;
+package dev.kojode.musicplayer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

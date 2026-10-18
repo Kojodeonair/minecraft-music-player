@@ -1,4 +1,4 @@
-package dev.codex.musicplayer;
+package dev.kojode.musicplayer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -21,8 +21,8 @@ public final class MusicScreen extends Screen {
         addRenderableWidget(Button.builder(Component.literal("Pause/Resume"), b -> MusicController.pauseResume(Minecraft.getInstance())).bounds(x + 112, y + 144, 100, 20).build());
         addRenderableWidget(Button.builder(Component.literal("Prev"), b -> MusicController.next(Minecraft.getInstance(), -1)).bounds(x + 216, y + 144, 40, 20).build());
         addRenderableWidget(Button.builder(Component.literal("Next"), b -> MusicController.next(Minecraft.getInstance(), 1)).bounds(x + 260, y + 144, 40, 20).build());
-        addRenderableWidget(Button.builder(Component.literal("Loop " + (PlayerConfig.loop ? "ON" : "OFF")), b -> { PlayerConfig.loop = !PlayerConfig.loop; PlayerConfig.playlistLoop = false; PlayerConfig.save(); clearAndInit(); }).bounds(x, y + 170, 90, 20).build());
-        addRenderableWidget(Button.builder(Component.literal("List loop " + (PlayerConfig.playlistLoop ? "ON" : "OFF")), b -> { PlayerConfig.playlistLoop = !PlayerConfig.playlistLoop; PlayerConfig.loop = false; PlayerConfig.save(); clearAndInit(); }).bounds(x + 94, y + 170, 120, 20).build());
+        addRenderableWidget(Button.builder(Component.literal("Loop " + (PlayerConfig.loop ? "ON" : "OFF")), b -> { PlayerConfig.loop = !PlayerConfig.loop; PlayerConfig.playlistLoop = false; PlayerConfig.save(); rebuildWidgets(); }).bounds(x, y + 170, 90, 20).build());
+        addRenderableWidget(Button.builder(Component.literal("List loop " + (PlayerConfig.playlistLoop ? "ON" : "OFF")), b -> { PlayerConfig.playlistLoop = !PlayerConfig.playlistLoop; PlayerConfig.loop = false; PlayerConfig.save(); rebuildWidgets(); }).bounds(x + 94, y + 170, 120, 20).build());
         addRenderableWidget(Button.builder(Component.literal("Vol -"), b -> volume(-.1f)).bounds(x + 218, y + 170, 38, 20).build());
         addRenderableWidget(Button.builder(Component.literal("Vol +"), b -> volume(.1f)).bounds(x + 262, y + 170, 38, 20).build());
     }
