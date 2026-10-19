@@ -51,4 +51,4 @@ Pause and resume operate on the selected audio channel to preserve its playback 
 
 ## License
 
-No license is currently included. Making this repository public does not grant permission to reuse, modify, or redistribute the project. Add a license if you want to grant those permissions.
+This project is licensed under the MIT License. See [LICENSE](LICENSE). The license applies to this project's code and documentation; Minecraft's own assets and music remain Mojang/Microsoft property and are not included here.

@@ -4,6 +4,7 @@
   "version": "${version}",
   "name": "Minecraft Music Player",
   "description": "Client-side browser for Minecraft music sound events.",
+  "license": "MIT",
   "environment": "client",
   "mixins": ["musicplayer.mixins.json"],
   "entrypoints": { "client": ["dev.kojode.musicplayer.MusicPlayerClient"] },
