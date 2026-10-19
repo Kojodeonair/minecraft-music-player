@@ -1,11 +1,54 @@
 # Minecraft Music Player
 
-Client-only Fabric project targeting Minecraft Java 26.3.
+A client-side Fabric mod for browsing and manually playing the music included in Minecraft Java Edition 26.3.
+
+> **Development disclosure — vibe-coded:** This project was created iteratively with substantial AI assistance. It builds successfully, but has not received a complete manual security audit or full gameplay QA. AI-assisted development does not guarantee that every feature is bug-free. Please report reproducible issues with your Minecraft, Fabric Loader, and Fabric API versions.
+
+## Features
+
+- Browse, search, and play individual Minecraft soundtrack tracks, including C418 tracks such as *Sweden* and *Wet Hands*.
+- Filter to background music and hide tracks that are not present in the active resource packs.
+- Pause/resume, stop, skip, repeat a track, or loop the playlist.
+- Adjust this player's volume independently of other sound instances, subject to Minecraft's Music and Master volume settings.
+- Open the player with a rebindable key; action keys can also be rebound in **Options → Controls**.
+- Optional radio-style HUD display, with independently configurable scale.
+- Adjustable main window scale. Both UI scales are saved in `config/musicplayer.json`.
+
+The mod is client-only. It uses Minecraft's installed music resources and does not bundle Minecraft audio files.
+
+## Requirements
+
+- Minecraft Java Edition **26.3**
+- Java **25**
+- Fabric Loader **0.19.5** or newer
+- Fabric API **0.161.0+26.3** or compatible
 
 ## Build
-Use JDK 25 and Gradle 9.6.0 (Loom 1.17.18 requires Gradle plugin API 9.5.0 or newer); run `gradle build`. Gradle 9.3.0 is too old and fails during plugin resolution. Minecraft 26.1+ uses Loom's non-remapping mode, so the Loader and Fabric API dependencies use Gradle's regular `implementation` configuration. Dependencies: Fabric Loader 0.19.5, Fabric API 0.161.0+26.3, Loom 1.17.18.
 
-## Install and use
-Install Fabric Loader for 26.3 and Fabric API 0.161.0+26.3. Copy the built jar from `build/libs/` to the instance's `mods` folder. Press P to open the player; the key is rebindable under Options > Controls. The default music action keys are K (play/pause), J (stop), N (next), B (previous), U (volume up), and I (volume down). Rebind all of them in Options > Controls under the Music Player category. The list offers individual vanilla soundtrack files, including C418 tracks such as Sweden, Wet Hands, and Subwoofer Lullaby, alongside creative, End, Nether, water, swamp, and menu music. Each entry is a separate selectable track, not a random music event containing multiple alternatives. The catalog checks installed resources at runtime, so tracks absent from the active game resources/resource packs are hidden. Search and scroll the list, select a track, then use Play, Stop, Pause/Resume, Next/Previous, loop, and volume controls. The compact player uses English labels. Its optional radio-style Dynamic Island appears at the top center during playback, pause, and briefly after stopping or a track ending. Toggle it with the Radio button; adjust its size from 25% to 180% with the -/+ controls beside it. The bottom-row UI -/+ buttons resize the main player from 65% to 150%. These size settings are saved in `config/musicplayer.json`. The UI uses a dark wood and stone panel with gold highlights; its background is drawn behind the standard Minecraft widgets so buttons stay readable.
+The Gradle wrapper pins Gradle **9.6.0**. From the project directory, run:
 
-Pause and resume control the selected audio channel directly, preserving the song position. Per-track volume updates are applied to that channel using Minecraft's normal master and Music category gain. The optional top-center indicator is styled as a small radio, and the controls use Minecraft's UI click sound. Client-only mixins expose the selected channel and pause vanilla music scheduling while a manually started mod track is active; after stop, vanilla music scheduling resumes.
+```shell
+./gradlew build
+```
+
+On Windows:
+
+```powershell
+./gradlew.bat build
+```
+
+The mod JAR is created in `build/libs/`.
+
+## Install and controls
+
+1. Install Fabric Loader for Minecraft 26.3 and Fabric API.
+2. Copy the mod JAR from `build/libs/` into your Fabric instance's `mods` folder.
+3. Start the game and press **P** to open the player. Change the open key or action keys in **Options → Controls → Music Player**.
+4. Search or scroll the track list, select a song, and use the playback buttons. The default action keys are **K** (play/pause), **J** (stop), **N** (next), **B** (previous), **U** (volume up), and **I** (volume down).
+5. Use the **Radio** toggle and adjacent **−/+** buttons for the HUD. Its scale ranges from 25% to 180%. Use **UI −/+** for the main window, which ranges from 65% to 150%.
+
+Pause and resume operate on the selected audio channel to preserve its playback position. Playback gain still respects Minecraft's Music and Master volume settings.
+
+## License
+
+No license is currently included. Making this repository public does not grant permission to reuse, modify, or redistribute the project. Add a license if you want to grant those permissions.

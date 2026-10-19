@@ -1,0 +1,10 @@
+{
+  "key.musicplayer.open": "Open Music Player",
+  "key.musicplayer.play_pause": "Play / Pause Music",
+  "key.musicplayer.stop": "Stop Music",
+  "key.musicplayer.next": "Next Music Track",
+  "key.musicplayer.previous": "Previous Music Track",
+  "key.musicplayer.volume_up": "Increase Music Player Volume",
+  "key.musicplayer.volume_down": "Decrease Music Player Volume",
+  "key.category.musicplayer.controls": "Music Player"
+}
